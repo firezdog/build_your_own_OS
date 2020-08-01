@@ -1,0 +1,6 @@
+.vagrant/
+iso/
+*.iso
+*.o
+*.elf
+stage2_eltorito
