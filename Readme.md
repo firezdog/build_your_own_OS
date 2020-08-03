@@ -28,5 +28,5 @@ genisoimage -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -A o
     * method: reserve in bss section using `resb` (reserve bytes?)
 * calling c function from assembly using cdecl
 * using __attribute__((packed)) for configuration bytes
-* c flags
-    * `-m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector -nostartfiles -nodefaultlibs -Wall -Wextra -Werror`
+* extern and call used to call defined function from assembly
+* make run w/ makefile now deploys the os to bochs
