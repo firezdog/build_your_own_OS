@@ -20,7 +20,6 @@ align 4
     dd CHECKSUM
 
 loader:
-    mov eax, 0xCAFEBABE     ; put 0xCAFEBABE in the eax register
     mov esp, kernel_stack + KERNEL_STACK_SIZE     ; move stack pointer to start of allocated stack
     extern kmain
     call kmain
