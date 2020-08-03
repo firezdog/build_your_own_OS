@@ -30,3 +30,13 @@ genisoimage -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -A o
 * using __attribute__((packed)) for configuration bytes
 * extern and call used to call defined function from assembly
 * make run w/ makefile now deploys the os to bochs
+
+# Output
+* m-mapped i/o or i/o ports
+    * i/o ports use `out <address> <data>` and `in <address> => data`
+
+## framebuffer (mmap)
+* start at 0x000B800, bits 15-8 = ascii, 7-4 fg, 3-0 bg color
+    * black 0 white 15 red 4
+    * eg `mov [0x000B800], word 0x4128` print green A on grey background
+* we can write a function in C to make this easier to manage

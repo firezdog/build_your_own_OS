@@ -18,7 +18,6 @@ align 4
     dd MAGIC_NUMBER
     dd FLAGS
     dd CHECKSUM
-
 loader:
     mov esp, kernel_stack + KERNEL_STACK_SIZE     ; move stack pointer to start of allocated stack
     extern kmain
