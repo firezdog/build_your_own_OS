@@ -22,3 +22,11 @@ genisoimage -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -A o
 * make sure your Vagrant / setup has a windows manager, or bochs will not be able to start properly
 * you may need to prompt bochs to continue in order for it to start booting into GRUB
 * `cat bochslog.txt` after quitting should show 'cafebabe' in the EAX register -- or you can directly inspect (`x eax`)
+
+# Using C
+* prerequisite: have a stack, esp points to beginning
+    * method: reserve in bss section using `resb` (reserve bytes?)
+* calling c function from assembly using cdecl
+* using __attribute__((packed)) for configuration bytes
+* c flags
+    * `-m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector -nostartfiles -nodefaultlibs -Wall -Wextra -Werror`
