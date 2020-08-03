@@ -19,11 +19,17 @@ char* fbuf = (char*) 0x000B8000;
 void fbuf_write_cell(unsigned int cell, char c, unsigned char fg_color, unsigned char bg_color);
 
 int kmain() {
-    fbuf_write_cell(10, 'H', FB_LIGHT_RED, FB_WHITE);
-    fbuf_write_cell(11, 'E', FB_LIGHT_RED, FB_WHITE);
-    fbuf_write_cell(12, 'L', FB_LIGHT_RED, FB_WHITE);
-    fbuf_write_cell(13, 'L', FB_LIGHT_RED, FB_WHITE);
-    fbuf_write_cell(14, 'O', FB_LIGHT_RED, FB_WHITE);
+    fbuf_write_cell(200, 'H', FB_WHITE, FB_BLACK);
+    fbuf_write_cell(201, 'E', FB_WHITE, FB_BLACK);
+    fbuf_write_cell(202, 'L', FB_WHITE, FB_BLACK);
+    fbuf_write_cell(203, 'L', FB_WHITE, FB_BLACK);
+    fbuf_write_cell(204, 'O', FB_WHITE, FB_BLACK);
+    fbuf_write_cell(205, ' ', FB_WHITE, FB_BLACK);
+    fbuf_write_cell(206, 'W', FB_WHITE, FB_BLACK);
+    fbuf_write_cell(207, 'O', FB_WHITE, FB_BLACK);
+    fbuf_write_cell(208, 'R', FB_WHITE, FB_BLACK);
+    fbuf_write_cell(209, 'L', FB_WHITE, FB_BLACK);
+    fbuf_write_cell(210, 'D', FB_WHITE, FB_BLACK);
     return 3405691582;  // cafebabe in hexadecimal
 }
 

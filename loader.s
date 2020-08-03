@@ -18,9 +18,9 @@ align 4
     dd MAGIC_NUMBER
     dd FLAGS
     dd CHECKSUM
+    extern kmain
 loader:
     mov esp, kernel_stack + KERNEL_STACK_SIZE     ; move stack pointer to start of allocated stack
-    extern kmain
     call kmain
-.loop:
-    jmp .loop   ; loop forever
+    .loop:
+        jmp .loop
