@@ -4,3 +4,4 @@ iso/
 *.o
 *.elf
 stage2_eltorito
+bochslog.txt
