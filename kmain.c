@@ -1,3 +1,13 @@
+#include "io.h"
+
+/* the I/O ports */
+#define FB_COMMAND_PORT 0x3D4
+#define FB_DATA_PORT 0x3D5
+/* the I/O port commands */
+#define FB_HIGH_BYTE_COMMAND 14
+#define FB_LOW_BYTE_COMMAND 15
+void fbuf_move_cursor(unsigned short pos);
+
 #define FB_BLACK 0
 #define FB_BLUE 1
 #define FB_GREEN 2
@@ -14,12 +24,12 @@
 #define FB_LIGHT_MAGENTA 13
 #define FB_LIGHT_BROWN 14
 #define FB_WHITE 15
-
 char* fbuf = (char*) 0x000B8000;
 void fbuf_write_cell(unsigned int row, unsigned int column, char c, unsigned char fg_color, unsigned char bg_color);
 
 int kmain() {
     fbuf_write_cell(5, 0, 'H', FB_WHITE, FB_BLACK);
+    fbuf_move_cursor(1032);
     return 3405691582;  // cafebabe in hexadecimal
 }
 
@@ -49,4 +59,11 @@ void fbuf_write_cell(unsigned int row, unsigned int column, char c, unsigned cha
     int i = 2 * (80 * row + column);
     fbuf[i] = c;
     fbuf[i + 1] = ((fg_color & 0x0F) << 4) | (bg_color & 0x0F);
+}
+
+void fbuf_move_cursor(unsigned short pos) {
+    outb(FB_COMMAND_PORT, FB_HIGH_BYTE_COMMAND);
+    outb(FB_DATA_PORT, (pos >> 8) & 0x00FF);
+    outb(FB_COMMAND_PORT, FB_LOW_BYTE_COMMAND);
+    outb(FB_DATA_PORT, pos & 0x00FF);
 }
