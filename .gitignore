@@ -5,3 +5,4 @@ iso/
 *.elf
 stage2_eltorito
 bochslog.txt
+ubuntu-bionic-18.04-cloudimg-console.log

@@ -4,7 +4,7 @@
 global loader
 
 ; allocating memory for a C stack
-KERNEL_STACK_SIZE equ 4096
+KERNEL_STACK_SIZE equ 100000
 section .bss
 align 4
 kernel_stack:
@@ -24,6 +24,6 @@ align 4
     
 loader:
     mov esp, kernel_stack + KERNEL_STACK_SIZE     ; move stack pointer to start of allocated stack
+    call kmain
     .loop:
-        call kmain
         jmp .loop

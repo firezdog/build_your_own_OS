@@ -25,11 +25,19 @@ void fbuf_move_cursor(unsigned short pos);
 #define FB_LIGHT_BROWN 14
 #define FB_WHITE 15
 char* fbuf = (char*) 0x000B8000;
-void fbuf_write_cell(unsigned int row, unsigned int column, char c, unsigned char fg_color, unsigned char bg_color);
+void fbuf_write_cell(unsigned int cell, char c, unsigned char fg_color, unsigned char bg_color);
+
+// cursor start should be the first row of the 6th line, with 80 rows per line (0 indexed)
+#define CURSOR_START 80 * 6
+unsigned short cursor_position = CURSOR_START;
+
+int write(char* buf, unsigned int len);
 
 int kmain() {
-    fbuf_write_cell(5, 0, 'H', FB_WHITE, FB_BLACK);
-    fbuf_move_cursor(1032);
+    fbuf_move_cursor(cursor_position);
+    // this is the absolute limit of what can be done without crashing the program -- I don't understand why (1) I can't use char* and (2) I can only use a 61 byte array
+    char essay[] = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+    write((char*) essay, 61);
     return 3405691582;  // cafebabe in hexadecimal
 }
 
@@ -43,7 +51,7 @@ fb_write_cell:
     @param fg_color the foreground color
     @param bg_color the background color
 */
-void fbuf_write_cell(unsigned int row, unsigned int column, char c, unsigned char fg_color, unsigned char bg_color) {
+void fbuf_write_cell(unsigned int cell, char c, unsigned char fg_color, unsigned char bg_color) {
     /* logic:
     We multiply row 80 and add column to get the cell number (no validation now), 
         then multiply that by 2 because each cell takes up two indices.
@@ -56,9 +64,9 @@ void fbuf_write_cell(unsigned int row, unsigned int column, char c, unsigned cha
         Example: fg = 0x02, bg = 0x08.
             Shift fg to the left to get 0x20 and then add the background (using  bitwise or) to get 0x28.
     */
-    int i = 2 * (80 * row + column);
+    int i = 2 * cell;
     fbuf[i] = c;
-    fbuf[i + 1] = ((fg_color & 0x0F) << 4) | (bg_color & 0x0F);
+    fbuf[i + 1] = ((bg_color & 0x0F) << 4) | (fg_color & 0x0F);
 }
 
 void fbuf_move_cursor(unsigned short pos) {
@@ -66,4 +74,12 @@ void fbuf_move_cursor(unsigned short pos) {
     outb(FB_DATA_PORT, (pos >> 8) & 0x00FF);
     outb(FB_COMMAND_PORT, FB_LOW_BYTE_COMMAND);
     outb(FB_DATA_PORT, pos & 0x00FF);
+}
+
+int write(char buf[], unsigned int len) {
+    for (unsigned int i = 0; i < len; i++) {
+        fbuf_write_cell(cursor_position++, buf[i], FB_WHITE, FB_BLACK);
+        fbuf_move_cursor(cursor_position);
+    }
+    return 0;
 }

@@ -40,3 +40,13 @@ genisoimage -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -A o
     * black 0 white 15 red 4
     * eg `mov [0x000B800], word 0x4128` print green A on grey background
 * we can write a function in C to make this easier to manage
+
+## Moving The Cursor
+* io.s and io.h together export a C function that can be used to move the cursor
+
+## Driver
+* Goal: driver will provide an interface to the frame-buffer through `write(char *buf, unsigned int len)`
+    * write contents of *buf to frame buffer to length len
+        * some kind of error checking would be needed?
+    * advance cursor on writing of character
+    * scroll screen (?)
